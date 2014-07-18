@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<lm:lmx xmlns:lm="http://www.nokia.com/schemas/location/landmarks/1/0">
+  <lm:landmarkCollection>
+    <lm:name>Landmarks</lm:name>
+    <lm:landmark>
+      <lm:name>дед Станция Дедовск</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8663888888889</lm:latitude>
+        <lm:longitude>37.1258333333333</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Торговый центр Либерти</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8611111111111</lm:latitude>
+        <lm:longitude>37.1277777777778</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Пруд с островом</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8605555555556</lm:latitude>
+        <lm:longitude>37.1286111111111</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Церковь</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.86</lm:latitude>
+        <lm:longitude>37.1280555555556</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Дом культуры</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8602777777778</lm:latitude>
+        <lm:longitude>37.12</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Парк и братмогила там</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8608333333333</lm:latitude>
+        <lm:longitude>37.1191666666667</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Городской парк</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8572222222222</lm:latitude>
+        <lm:longitude>37.1288888888889</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+    <lm:landmark>
+      <lm:name>дед Ленин</lm:name>
+      <lm:coordinates>
+        <lm:latitude>55.8591666666667</lm:latitude>
+        <lm:longitude>37.1197222222222</lm:longitude>
+      </lm:coordinates>
+    </lm:landmark>
+  </lm:landmarkCollection>
+</lm:lmx>
