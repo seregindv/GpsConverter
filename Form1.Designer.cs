@@ -37,6 +37,7 @@ namespace GpsConverter
             this.label1 = new System.Windows.Forms.Label();
             this.prefixTextBox = new System.Windows.Forms.TextBox();
             this.resultPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.info = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -51,6 +52,7 @@ namespace GpsConverter
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.info);
             this.splitContainer1.Panel1.Controls.Add(this.convertButton);
             this.splitContainer1.Panel1.Controls.Add(this.montiorClipboardCheckBox);
             this.splitContainer1.Panel1.Controls.Add(this.fromBox);
@@ -94,9 +96,9 @@ namespace GpsConverter
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fromBox.Location = new System.Drawing.Point(3, 3);
+            this.fromBox.MaxLength = 2147483647;
             this.fromBox.Multiline = true;
             this.fromBox.Name = "fromBox";
-            this.fromBox.MaxLength = Int32.MaxValue;
             this.fromBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.fromBox.Size = new System.Drawing.Size(680, 225);
             this.fromBox.TabIndex = 0;
@@ -131,6 +133,17 @@ namespace GpsConverter
             this.resultPanel.Size = new System.Drawing.Size(686, 263);
             this.resultPanel.TabIndex = 0;
             // 
+            // info
+            // 
+            this.info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.info.Location = new System.Drawing.Point(563, 234);
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(23, 23);
+            this.info.TabIndex = 5;
+            this.info.Text = "?";
+            this.info.UseVisualStyleBackColor = true;
+            this.info.Click += new System.EventHandler(this.info_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.convertButton;
@@ -157,6 +170,7 @@ namespace GpsConverter
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox prefixTextBox;
         private System.Windows.Forms.TableLayoutPanel resultPanel;
+        private System.Windows.Forms.Button info;
     }
 }
 

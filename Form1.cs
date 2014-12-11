@@ -8,14 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using GpsConverter.Converter;
 using System.Text.RegularExpressions;
+using GpsConverter.PointParsers;
 using GpsConverter.Wikimapia;
 
 namespace GpsConverter
 {
     public partial class Form1 : ClipboardMonitorForm
     {
-        List<TextBox> _resultBoxes = new List<TextBox>();
-
+        readonly List<TextBox> _resultBoxes = new List<TextBox>();
         readonly ClipboardCoordinatesParser _htmlParser;
 
         public Form1()
@@ -94,14 +94,14 @@ namespace GpsConverter
         {
             try
             {
-                IEarthConverter converter = null;
+                IEarthConverter converter;
                 var fromText = fromBox.Text;
                 if (fromText.StartsWith("http") && fromText.Contains("maps.yandex.ru"))
                     converter = new YaLinkToGpxConverter();
                 else if (fromText.Contains("data-jmapping"))
                     converter = new PoiConverter(new KarlovyVaryBusMapConverter());
                 else if (fromText.Contains("GLatLng"))
-                    converter=new PoiConverter(new CzWiFiMapConverter());
+                    converter = new PoiConverter(new CzWiFiMapConverter());
                 else
                     converter = new LinewizePoiConverter();
                 var converted = converter.Convert(fromText);
@@ -125,6 +125,17 @@ namespace GpsConverter
                 fromBox.ScrollToCaret();
             }
             base.OnClipboardChanged();
+        }
+
+        private void info_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(this,
+                PointParser.GetFormatSamples()
+                    .Aggregate(
+                        new StringBuilder(),
+                        (builder, sample) => builder.AppendLine(sample),
+                        builder => builder.ToString()),
+                "Supported formats", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

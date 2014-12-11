@@ -23,5 +23,10 @@ namespace GpsConverter.PointParsers
                    match.Groups["lat_deg"].Value, match.Groups["lat_min"].Value, match.Groups["lat_sec"].Value,
                    match.Groups["name"].Value);
         }
+
+        public override string FormatSample
+        {
+            get { return @"55°52'48""N   38°46'38""E MTB Skill Park"; }
+        }
     }
 }

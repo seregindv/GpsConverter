@@ -1,4 +1,5 @@
-﻿using GpsConverter.Converter;
+﻿using System.Diagnostics;
+using GpsConverter.Converter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,15 @@ namespace GpsConverter.PointParsers
 
         public abstract bool TryParse(string point);
 
+        public abstract string FormatSample { get; }
+
         #region static
 
         static readonly PointParser[] _parsers =
         { 
-            new CultTourizmPointParser(), 
             new WikimapiaPointParser(),
+            new ManualPointParser(),
+            new CultTourizmPointParser(),
             new AutotravelPointParser()
         };
 
@@ -27,6 +31,11 @@ namespace GpsConverter.PointParsers
             if (parser == null)
                 return null;
             return parser.Point;
+        }
+
+        public static IEnumerable<string> GetFormatSamples()
+        {
+            return _parsers.Select(parser => parser.FormatSample);
         }
 
         #endregion
