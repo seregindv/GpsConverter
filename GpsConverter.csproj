@@ -71,9 +71,11 @@
     </Compile>
     <Compile Include="Converter\CzWiFiMapConverter.cs" />
     <Compile Include="Converter\EarthPoint.cs" />
+    <Compile Include="Converter\GpxConverter.cs" />
     <Compile Include="Converter\IEarthConverter.cs" />
     <Compile Include="Converter\IPoiConverter.cs" />
     <Compile Include="Converter\KarlovyVaryBusMapConverter.cs" />
+    <Compile Include="Converter\KmlConverter.cs" />
     <Compile Include="Converter\LinewizePoiConverter.cs" />
     <Compile Include="Converter\NamedEarthPoint.cs" />
     <Compile Include="Converter\PoiConverter.cs" />

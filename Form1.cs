@@ -102,6 +102,10 @@ namespace GpsConverter
                     converter = new PoiConverter(new KarlovyVaryBusMapConverter());
                 else if (fromText.Contains("GLatLng"))
                     converter = new PoiConverter(new CzWiFiMapConverter());
+                else if (fromText.IndexOf("<gpx", StringComparison.OrdinalIgnoreCase) != -1)
+                    converter = new PoiConverter(new GpxConverter());
+                else if (fromText.IndexOf("<kml", StringComparison.OrdinalIgnoreCase) != -1)
+                    converter = new PoiConverter(new KmlConverter());
                 else
                     converter = new LinewizePoiConverter();
                 var converted = converter.Convert(fromText);

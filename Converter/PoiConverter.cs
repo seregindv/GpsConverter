@@ -94,7 +94,7 @@ namespace GpsConverter.Converter
                         new XElement(ns + "Name", point.Name),
                         new XElement(ns + "Point",
                             new XElement(ns + "coordinates",
-                                point.StringLongitude + "," + point.StringLatitude + ",0"
+                                point.StringLongitude + "," + point.StringLatitude
                             )
                         )
                     )

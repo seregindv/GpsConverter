@@ -10,10 +10,6 @@ namespace GpsConverter.Wikimapia
     {
         public IEnumerable<ClipboardPoint> Points { private set; get; }
 
-        public ClipboardCoordinatesParser()
-        {
-        }
-
         public override bool Parse()
         {
             if (!base.Parse())
