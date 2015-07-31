@@ -63,6 +63,8 @@ namespace GpsConverter.Converter
             return new[] { result.ToString() };
         }
 
+        public string Name { get; set; }
+
         #endregion
     }
 }

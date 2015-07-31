@@ -31,13 +31,15 @@ namespace GpsConverter
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label2 = new System.Windows.Forms.Label();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.info = new System.Windows.Forms.Button();
             this.convertButton = new System.Windows.Forms.Button();
             this.montiorClipboardCheckBox = new System.Windows.Forms.CheckBox();
             this.fromBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.prefixTextBox = new System.Windows.Forms.TextBox();
             this.resultPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.info = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -52,6 +54,8 @@ namespace GpsConverter
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            this.splitContainer1.Panel1.Controls.Add(this.nameBox);
             this.splitContainer1.Panel1.Controls.Add(this.info);
             this.splitContainer1.Panel1.Controls.Add(this.convertButton);
             this.splitContainer1.Panel1.Controls.Add(this.montiorClipboardCheckBox);
@@ -65,6 +69,35 @@ namespace GpsConverter
             this.splitContainer1.Size = new System.Drawing.Size(686, 527);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(351, 239);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "KML Name";
+            // 
+            // nameBox
+            // 
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameBox.Location = new System.Drawing.Point(417, 236);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(140, 20);
+            this.nameBox.TabIndex = 6;
+            // 
+            // info
+            // 
+            this.info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.info.Location = new System.Drawing.Point(563, 234);
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(23, 23);
+            this.info.TabIndex = 5;
+            this.info.Text = "?";
+            this.info.UseVisualStyleBackColor = true;
+            this.info.Click += new System.EventHandler(this.info_Click);
             // 
             // convertButton
             // 
@@ -105,9 +138,9 @@ namespace GpsConverter
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(299, 239);
+            this.label1.Location = new System.Drawing.Point(243, 239);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 4;
@@ -115,8 +148,8 @@ namespace GpsConverter
             // 
             // prefixTextBox
             // 
-            this.prefixTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.prefixTextBox.Location = new System.Drawing.Point(338, 236);
+            this.prefixTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.prefixTextBox.Location = new System.Drawing.Point(282, 236);
             this.prefixTextBox.Name = "prefixTextBox";
             this.prefixTextBox.Size = new System.Drawing.Size(63, 20);
             this.prefixTextBox.TabIndex = 3;
@@ -132,17 +165,6 @@ namespace GpsConverter
             this.resultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.resultPanel.Size = new System.Drawing.Size(686, 263);
             this.resultPanel.TabIndex = 0;
-            // 
-            // info
-            // 
-            this.info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.info.Location = new System.Drawing.Point(563, 234);
-            this.info.Name = "info";
-            this.info.Size = new System.Drawing.Size(23, 23);
-            this.info.TabIndex = 5;
-            this.info.Text = "?";
-            this.info.UseVisualStyleBackColor = true;
-            this.info.Click += new System.EventHandler(this.info_Click);
             // 
             // Form1
             // 
@@ -171,6 +193,8 @@ namespace GpsConverter
         private System.Windows.Forms.TextBox prefixTextBox;
         private System.Windows.Forms.TableLayoutPanel resultPanel;
         private System.Windows.Forms.Button info;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox nameBox;
     }
 }
 

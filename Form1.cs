@@ -108,6 +108,7 @@ namespace GpsConverter
                     converter = new PoiConverter(new KmlConverter());
                 else
                     converter = new LinewizePoiConverter();
+                converter.Name = nameBox.Text;
                 var converted = converter.Convert(fromText);
                 SetupResult(converted);
             }

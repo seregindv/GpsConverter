@@ -36,6 +36,8 @@ namespace GpsConverter.Converter
             return result;
         }
 
+        public string Name { get; set; }
+
         #endregion
 
         private string GetWpt(IList<NamedEarthPoint> points)
@@ -89,12 +91,15 @@ namespace GpsConverter.Converter
             var doc = new XDocument(
                 new XDeclaration("1.0", "UTF-8", null),
                 new XElement(ns + "kml",
-                    from point in points
-                    select new XElement(ns + "Placemark",
-                        new XElement(ns + "Name", point.Name),
-                        new XElement(ns + "Point",
-                            new XElement(ns + "coordinates",
-                                point.StringLongitude + "," + point.StringLatitude
+                    new XElement(ns + "Document",
+                        new XElement(ns + "name", Name),
+                        from point in points
+                        select new XElement(ns + "Placemark",
+                            new XElement(ns + "name", point.Name),
+                            new XElement(ns + "Point",
+                                new XElement(ns + "coordinates",
+                                    point.StringLongitude + "," + point.StringLatitude
+                                )
                             )
                         )
                     )

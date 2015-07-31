@@ -8,5 +8,6 @@ namespace GpsConverter.Converter
     interface IEarthConverter
     {
         string[] Convert(string something);
+        string Name { set; get; }
     }
 }
