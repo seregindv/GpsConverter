@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Карта для GPS Converter'а</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #map {
+            min-height: 100%;
+        }
+    </style>
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        var placemarks = {};
+        var myMap;
+
+        function init() {
+            myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 7
+            });
+
+            myMap.events.add('contextmenu', addPlacemark);
+
+            var firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Get"
+                },
+                options: {
+                    selectOnClick: false
+                }
+            });
+            firstButton.events.add('press', function () { getPoints("/actions/get"); });
+            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 30, left: 10 } });
+
+            firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Submit"
+                },
+                options: {
+                    selectOnClick: false,
+                    maxWidth: 500
+                },
+            });
+            firstButton.events.add('press', function () { submitPoints('/actions/submit'); });
+            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 30, left: 60 } });
+
+            firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Copy"
+                },
+                options: {
+                    selectOnClick: false,
+                    maxWidth: 500
+                },
+            });
+            firstButton.events.add('press', function () { submitPoints('/actions/copy'); });
+            myMap.controls.add(firstButton, { float: 'right' });
+
+            firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Paste"
+                },
+                options: {
+                    selectOnClick: false,
+                    maxWidth: 500
+                },
+            });
+            firstButton.events.add('press', function () { getPoints('/actions/paste'); });
+            myMap.controls.add(firstButton, { float: 'right' });
+        }
+
+        function addPlacemark(e) {
+            var coord = e.get('coords');
+            var name = prompt('Point name');
+            if (name != null) {
+                var placemarkId = guid();
+                var placemark = getPlacemark(coord, placemarkId, name);
+                placemarks[placemarkId] = placemark;
+                myMap.geoObjects.add(placemark);
+            }
+        }
+
+        function deletePlacemark(placemarkId) {
+            myMap.geoObjects.remove(placemarks[placemarkId]);
+            delete placemarks[placemarkId];
+        }
+
+        function renamePlacemark(placemarkId) {
+            var placemark = placemarks[placemarkId];
+            var name = prompt('Point name', placemark.properties.get('hintContent'));
+            if (name != null) {
+                placemark.properties.set({
+                    hintContent: name,
+                    balloonContent: getBalloonContent(placemarkId, name)
+                });
+                placemark.balloon.close();
+            }
+        }
+
+        function submitPoints(address) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", address, true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+            // send the collected data as JSON
+            var data = {};
+            for (var key in placemarks) {
+                if (placemarks.hasOwnProperty(key)) {
+                    var placemark = placemarks[key];
+                    data[key] = [placemark.geometry.getCoordinates(), placemark.properties.get('hintContent')];
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        }
+
+        function getPoints(action) {
+            getRequest = new XMLHttpRequest();
+            getRequest.open("get", action, true);
+            getRequest.onreadystatechange = populatePoints;
+            getRequest.send(null);
+        }
+
+        function populatePoints() {
+            if (getRequest.readyState != 4)
+                return;
+            var data = JSON.parse(getRequest.responseText);
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var datum = data[key];
+                    if (name != null) {
+                        var placemark = getPlacemark(datum[0], key, datum[1]);
+                        placemarks[key] = placemark;
+                        myMap.geoObjects.add(placemark);
+                    }
+                }
+            }
+        }
+
+        function getPlacemark(coords, key, name) {
+            return new ymaps.Placemark(coords, {
+                hintContent: name,
+                balloonContent: getBalloonContent(key, name)
+            }, { draggable: true });
+        }
+
+        function getBalloonContent(key, name) {
+            return name + '<br><button onclick="deletePlacemark(\'' + key + '\')">x</button> <button onclick="renamePlacemark(\'' + key + '\')">rename</button>';
+        }
+
+        function guid() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                  .toString(16)
+                  .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+              s4() + '-' + s4() + s4() + s4();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="map" />
+</body>
+
+</html>

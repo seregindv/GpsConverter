@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GpsConverter.Controls;
 using GpsConverter.Converter;
 using System.Text.RegularExpressions;
 using GpsConverter.PointParsers;
+using GpsConverter.Web.RequestProcessors;
+using GpsConverter.Web.Servers;
 using GpsConverter.Wikimapia;
 
 namespace GpsConverter
 {
-    public partial class Form1 : ClipboardMonitorForm
+    public partial class Form1 : ClipboardMonitorForm, IPoiProvider
     {
-        readonly List<TextBox> _resultBoxes = new List<TextBox>();
+        readonly List<TitledTextbox> _resultBoxes = new List<TitledTextbox>();
         readonly ClipboardCoordinatesParser _htmlParser;
+        private LocalWebServer _webServer;
 
         public Form1()
         {
@@ -24,49 +29,35 @@ namespace GpsConverter
             InitializeComponent();
             _resultBoxes.Add(CreateResultTextBox());
             resultPanel.Controls.Add(_resultBoxes[0], 0, 0);
-            fromBox.KeyDown += TextBox_KeyDown;
         }
 
-        private void SetupResult(string[] result)
+        private void SetupResult(ConvertResult[] result)
         {
             for (int i = _resultBoxes.Count; i < result.Length; i++)
                 _resultBoxes.Add(CreateResultTextBox());
             for (int i = 0; i < result.Length; i++)
-                _resultBoxes[i].Text = result[i];
+            {
+                _resultBoxes[i].Text = result[i].Text;
+                _resultBoxes[i].Title = result[i].Title;
+                _resultBoxes[i].TextColor = result[i].IsError ? Color.Red : Color.Black;
+            }
             if (result.Length != resultPanel.ColumnCount)
             {
                 var colCount = resultPanel.ColumnCount;
                 resultPanel.ColumnCount = result.Length;
                 var colWidth = 100 / (float)result.Length;
                 for (int i = 0; i < resultPanel.ColumnCount; i++)
-                {
                     if (resultPanel.ColumnStyles.Count > i)
                         SetupColumnStyle(resultPanel.ColumnStyles[i], colWidth);
                     else
                         resultPanel.ColumnStyles.Add(SetupColumnStyle(new ColumnStyle(), colWidth));
-                }
+
                 if (colCount > result.Length)
-                {
                     for (int i = result.Length; i < colCount; i++)
                         resultPanel.Controls.Remove(_resultBoxes[i]);
-                }
                 else if (colCount < result.Length)
                     for (int i = colCount; i < result.Length; i++)
-                    {
                         resultPanel.Controls.Add(_resultBoxes[i], i, 0);
-                    }
-            }
-        }
-
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (textBox == null)
-                return;
-            if (e.Control && e.KeyCode == Keys.A)
-            {
-                textBox.SelectAll();
-                e.SuppressKeyPress = true;
             }
         }
 
@@ -77,37 +68,17 @@ namespace GpsConverter
             return columnStyle;
         }
 
-        private TextBox CreateResultTextBox()
+        private TitledTextbox CreateResultTextBox()
         {
-            var result = new TextBox
-            {
-                Multiline = true,
-                WordWrap = true,
-                Dock = DockStyle.Fill,
-                ScrollBars = ScrollBars.Both
-            };
-            result.KeyDown += TextBox_KeyDown;
-            return result;
+            return new TitledTextbox();
         }
 
         private void convertButton_Click(object sender, EventArgs e)
         {
             try
             {
-                IEarthConverter converter;
                 var fromText = fromBox.Text;
-                if (fromText.StartsWith("http") && fromText.Contains("maps.yandex.ru"))
-                    converter = new YaLinkToGpxConverter();
-                else if (fromText.Contains("data-jmapping"))
-                    converter = new PoiConverter(new KarlovyVaryBusMapConverter());
-                else if (fromText.Contains("GLatLng"))
-                    converter = new PoiConverter(new CzWiFiMapConverter());
-                else if (fromText.IndexOf("<gpx", StringComparison.OrdinalIgnoreCase) != -1)
-                    converter = new PoiConverter(new GpxConverter());
-                else if (fromText.IndexOf("<kml", StringComparison.OrdinalIgnoreCase) != -1)
-                    converter = new PoiConverter(new KmlConverter());
-                else
-                    converter = new LinewizePoiConverter();
+                var converter = GetConverter(fromText);
                 converter.Name = nameBox.Text;
                 var converted = converter.Convert(fromText);
                 SetupResult(converted);
@@ -116,6 +87,24 @@ namespace GpsConverter
             {
                 MessageBox.Show(ex.Message, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+        }
+
+        private IEarthConverter GetConverter(string text)
+        {
+            IEarthConverter converter;
+            if (text.StartsWith("https://yandex.ru/maps/"))
+                converter = new YaLinkToGpxConverter();
+            else if (text.Contains("data-jmapping"))
+                converter = new PoiConverter(new KarlovyVaryBusMapConverter());
+            else if (text.Contains("GLatLng"))
+                converter = new PoiConverter(new CzWiFiMapConverter());
+            else if (text.IndexOf("<gpx", StringComparison.OrdinalIgnoreCase) != -1)
+                converter = new PoiConverter(new GpxConverter());
+            else if (text.IndexOf("<kml", StringComparison.OrdinalIgnoreCase) != -1)
+                converter = new PoiConverter(new KmlConverter());
+            else
+                converter = new LinewizePoiConverter();
+            return converter;
         }
 
         protected override void OnClipboardChanged()
@@ -141,6 +130,31 @@ namespace GpsConverter
                         (builder, sample) => builder.AppendLine(sample),
                         builder => builder.ToString()),
                 "Supported formats", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public IList<NamedEarthPoint> GetPoints()
+        {
+            var fromText = fromBox.Text;
+            return GetConverter(fromText).GetPoints(fromText);
+        }
+
+        private void mapLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (_webServer == null)
+            {
+                _webServer = new LocalWebServer(
+                    new GetRequestProcessor(this),
+                    new MapRequestProcessor());
+                _webServer.Start();
+            }
+            Process.Start(new Uri(_webServer.BaseUri, "map/").ToString());
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_webServer!=null)
+                _webServer.Stop();
         }
     }
 }

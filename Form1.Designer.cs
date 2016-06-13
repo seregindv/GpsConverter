@@ -1,4 +1,5 @@
 ﻿using System;
+using GpsConverter.Converter;
 
 namespace GpsConverter
 {
@@ -31,12 +32,13 @@ namespace GpsConverter
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.mapLink = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.nameBox = new System.Windows.Forms.TextBox();
             this.info = new System.Windows.Forms.Button();
             this.convertButton = new System.Windows.Forms.Button();
             this.montiorClipboardCheckBox = new System.Windows.Forms.CheckBox();
-            this.fromBox = new System.Windows.Forms.TextBox();
+            this.fromBox = new GpsConverter.Controls.TextBoxEx();
             this.label1 = new System.Windows.Forms.Label();
             this.prefixTextBox = new System.Windows.Forms.TextBox();
             this.resultPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -54,6 +56,7 @@ namespace GpsConverter
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.mapLink);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.nameBox);
             this.splitContainer1.Panel1.Controls.Add(this.info);
@@ -69,6 +72,17 @@ namespace GpsConverter
             this.splitContainer1.Size = new System.Drawing.Size(686, 527);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // mapLink
+            // 
+            this.mapLink.AutoSize = true;
+            this.mapLink.Location = new System.Drawing.Point(125, 239);
+            this.mapLink.Name = "mapLink";
+            this.mapLink.Size = new System.Drawing.Size(28, 13);
+            this.mapLink.TabIndex = 8;
+            this.mapLink.TabStop = true;
+            this.mapLink.Text = "Map";
+            this.mapLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.mapLink_LinkClicked);
             // 
             // label2
             // 
@@ -175,6 +189,7 @@ namespace GpsConverter
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -186,7 +201,7 @@ namespace GpsConverter
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TextBox fromBox;
+        private Controls.TextBoxEx fromBox;
         private System.Windows.Forms.Button convertButton;
         private System.Windows.Forms.CheckBox montiorClipboardCheckBox;
         private System.Windows.Forms.Label label1;
@@ -195,6 +210,7 @@ namespace GpsConverter
         private System.Windows.Forms.Button info;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.LinkLabel mapLink;
     }
 }
 

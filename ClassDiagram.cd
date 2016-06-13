@@ -17,9 +17,10 @@
   <Class Name="GpsConverter.Form1" Collapsed="true">
     <Position X="3.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACCABBBAAACAAhADAIEAAQAsAAAAEAIAAAA=</HashCode>
+      <HashCode>AAAAIAAYACCAABBAAAiAAhADAIEAAQAsQAAAEAIAAAA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="GpsConverter.HtmlClipboardParser" Collapsed="true">
     <Position X="0.5" Y="7.5" Width="1.5" />
@@ -74,7 +75,7 @@
   <Class Name="GpsConverter.Converter.PoiConverter" Collapsed="true">
     <Position X="8.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAIAAAAAAAAAAhAAAAAAAASAAAAA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAIAAAAQAAAAAhAAAAAAAASAAAAA=</HashCode>
       <FileName>Converter\PoiConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -82,7 +83,7 @@
   <Class Name="GpsConverter.Converter.YaLinkToGpxConverter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="6.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAAAAAIAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>Converter\YaLinkToGpxConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -104,21 +105,21 @@
   <Class Name="GpsConverter.PointParsers.AutotravelPointParser" Collapsed="true">
     <Position X="3" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAIAA=</HashCode>
       <FileName>PointParsers\AutotravelPointParser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GpsConverter.PointParsers.CultTourizmPointParser" Collapsed="true">
     <Position X="5.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAIAA=</HashCode>
       <FileName>PointParsers\CultTourizmPointParser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GpsConverter.PointParsers.PointParser" Collapsed="true">
     <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAgAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAgAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAABIAA=</HashCode>
       <FileName>PointParsers\PointParser.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -132,7 +133,7 @@
   <Class Name="GpsConverter.PointParsers.WikimapiaPointParser" Collapsed="true">
     <Position X="0.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAIAAAAAIAA=</HashCode>
       <FileName>PointParsers\WikimapiaPointParser.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -200,7 +201,7 @@
   <Interface Name="GpsConverter.Converter.IEarthConverter" Collapsed="true">
     <Position X="11" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converter\IEarthConverter.cs</FileName>
     </TypeIdentifier>
   </Interface>

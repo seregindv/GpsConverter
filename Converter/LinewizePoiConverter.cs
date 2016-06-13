@@ -22,7 +22,7 @@ namespace GpsConverter.Converter
 
         private IList<string> UnparsedLines { set; get; }
 
-        protected override IList<NamedEarthPoint> GetPoints(string points)
+        public override IList<NamedEarthPoint> GetPoints(string points)
         {
             UnparsedLines.Clear();
             var result = new List<NamedEarthPoint>();
@@ -41,7 +41,7 @@ namespace GpsConverter.Converter
             return result;
         }
 
-        public override string[] Convert(string something)
+        public override ConvertResult[] Convert(string something)
         {
             var result = base.Convert(something);
             if (UnparsedLines.Count > 0)
@@ -49,7 +49,7 @@ namespace GpsConverter.Converter
                 var unparsed = UnparsedLines.Aggregate(new StringBuilder(),
                     (builder, line) => builder.AppendLine(line),
                     builder => builder.ToString());
-                result = result.Union(new[] { unparsed }).ToArray();
+                result = result.Concat(new[] { new ConvertResult("Unparsed", unparsed, true) }).ToArray();
             }
             return result;
         }

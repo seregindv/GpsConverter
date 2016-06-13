@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,45 +23,59 @@ namespace GpsConverter.Converter
 
         #region IEarthConverter Members
 
-        public string[] Convert(string something)
+        public IList<NamedEarthPoint> GetPoints(string points)
         {
-            Match match = Regex.Match(something, linkStruct);
+            var result = new List<NamedEarthPoint>();
+            var match = Regex.Match(points, linkStruct);
             if (!match.Success)
                 throw new ArgumentException("Path not found");
-            StringBuilder result = new StringBuilder();
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            using (XmlWriter xmlResult = XmlWriter.Create(result, settings))
+
+            var currentPoint = new EarthPoint(match.Groups["ini_lon"].Value, match.Groups["ini_lat"].Value);
+            var counter = 1;
+            result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, "1"));
+
+            var lonEnumerator = match.Groups["lon_off"].Captures.GetEnumerator();
+            var latEnumerator = match.Groups["lat_off"].Captures.GetEnumerator();
+            lonEnumerator.Reset();
+            latEnumerator.Reset();
+            do
+            {
+                if (!latEnumerator.MoveNext())
+                {
+                    if (lonEnumerator.MoveNext())
+                        throw new Exception("Lontitude without latitude");
+                    break;
+                }
+                if (!lonEnumerator.MoveNext())
+                    throw new Exception("Latitude without lontitude");
+                currentPoint.Offset(((Capture)lonEnumerator.Current).Value, ((Capture)latEnumerator.Current).Value);
+                counter++;
+                result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, counter.ToString()));
+            } while (true);
+            return result;
+        }
+
+        public ConvertResult[] Convert(string something)
+        {
+            var points = GetPoints(something);
+            var result = new StringBuilder();
+            var settings = new XmlWriterSettings
+            {
+                Indent = true
+            };
+            using (var xmlResult = XmlWriter.Create(result, settings))
             {
                 xmlResult.WriteStartElement("gpx");
                 xmlResult.WriteStartElement("trk");
                 xmlResult.WriteStartElement("trkseg");
-                EarthPoint point = new EarthPoint(match.Groups["ini_lon"].Value, match.Groups["ini_lat"].Value);
-                WriteTrkpt(xmlResult, point);
-                IEnumerator lonEnumerator = match.Groups["lon_off"].Captures.GetEnumerator();
-                IEnumerator latEnumerator = match.Groups["lat_off"].Captures.GetEnumerator();
-                lonEnumerator.Reset();
-                latEnumerator.Reset();
-                do
-                {
-                    if (!latEnumerator.MoveNext())
-                    {
-                        if (lonEnumerator.MoveNext())
-                            throw new Exception("Lontitude without latitude");
-                        break;
-                    }
-                    if (!lonEnumerator.MoveNext())
-                        throw new Exception("Latitude without lontitude");
-                    point.Offset(((Capture)lonEnumerator.Current).Value, ((Capture)latEnumerator.Current).Value);
+                foreach (var point in points)
                     WriteTrkpt(xmlResult, point);
-
-                } while (true);
                 xmlResult.WriteEndElement(); // trkseg
                 xmlResult.WriteEndElement(); // trk
                 xmlResult.WriteEndElement(); // gpx
                 xmlResult.Close();
             }
-            return new[] { result.ToString() };
+            return new[] { new ConvertResult("GPX path", result.ToString()) };
         }
 
         public string Name { get; set; }

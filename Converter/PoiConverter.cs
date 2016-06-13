@@ -21,18 +21,18 @@ namespace GpsConverter.Converter
 
         #region IEarthConverter Members
 
-        protected virtual IList<NamedEarthPoint> GetPoints(string points)
+        public virtual IList<NamedEarthPoint> GetPoints(string points)
         {
             return _converter.GetPoints(points);
         }
 
-        public virtual string[] Convert(string something)
+        public virtual ConvertResult[] Convert(string something)
         {
             var points = GetPoints(something);
-            var result = new string[3];
-            result[0] = GetWpt(points);
-            result[1] = GetLmx(points);
-            result[2] = GetKml(points);
+            var result = new ConvertResult[3];
+            result[0] = new ConvertResult("WPT", GetWpt(points));
+            result[1] = new ConvertResult("LMX", GetLmx(points));
+            result[2] = new ConvertResult("KML", GetKml(points));
             return result;
         }
 
