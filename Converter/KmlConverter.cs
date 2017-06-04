@@ -19,7 +19,7 @@ namespace GpsConverter.Converter
             var ns = firstElement.GetDefaultNamespace();
             var nsManager = new XmlNamespaceManager(new NameTable());
             nsManager.AddNamespace("kml", ns.NamespaceName);
-            return firstElement.XPathSelectElements("kml:Folder/kml:Placemark", nsManager)
+            return firstElement.XPathSelectElements("//kml:Placemark", nsManager)
                 .Select(element =>
                 {
                     var coordinates = element
