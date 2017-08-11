@@ -53,7 +53,7 @@ namespace GpsConverter.Web.Servers
                             try
                             {
                                 string rstr = _responderMethod(ctx);
-                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
+                                byte[] buf = Encoding.UTF8.GetBytes(rstr ?? String.Empty);
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                             }

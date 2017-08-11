@@ -117,6 +117,9 @@ namespace GpsConverter
                 fromBox.AppendText(points);
                 fromBox.Select(fromBox.Text.Length, 0);
                 fromBox.ScrollToCaret();
+                var firstPoint = _htmlParser.Points.FirstOrDefault();
+                if (firstPoint != null)
+                    Text = firstPoint.Description;
             }
             base.OnClipboardChanged();
         }
@@ -144,7 +147,8 @@ namespace GpsConverter
             {
                 _webServer = new LocalWebServer(
                     new GetRequestProcessor(this),
-                    new MapRequestProcessor());
+                    new MapRequestProcessor(),
+                    new CopyRequestProcessor());
                 _webServer.Start();
             }
             Process.Start(new Uri(_webServer.BaseUri, "map/").ToString());
