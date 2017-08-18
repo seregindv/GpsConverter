@@ -10,7 +10,7 @@ namespace GpsConverter.PointParsers
 {
     public class ManualPointParser : RegexPointPaser
     {
-        readonly Regex _pointExpression = new Regex(@"(\-?[\d,\.]+)\s+(\-?[\d,\.]+)\s+(.+)");
+        readonly Regex _pointExpression = new Regex(@"(\-?\d+(?:,|\.)\d+)\s+(\-?\d+(?:,|\.)\d+)\s+(.+)");
 
         protected override Regex PointExpression
         {
