@@ -28,9 +28,7 @@ namespace GpsConverter.PointParsers
         public static NamedEarthPoint Parse(string point)
         {
             var parser = _parsers.FirstOrDefault(p => p.TryParse(point));
-            if (parser == null)
-                return null;
-            return parser.Point;
+            return parser?.Point;
         }
 
         public static IEnumerable<string> GetFormatSamples()

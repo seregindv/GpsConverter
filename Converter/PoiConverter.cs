@@ -30,7 +30,7 @@ namespace GpsConverter.Converter
         {
             var points = GetPoints(something);
             var result = new ConvertResult[3];
-            result[0] = new ConvertResult("WPT", GetWpt(points));
+            result[0] = new ConvertResult("GPX", GetWpt(points));
             result[1] = new ConvertResult("LMX", GetLmx(points));
             result[2] = new ConvertResult("KML", GetKml(points));
             return result;

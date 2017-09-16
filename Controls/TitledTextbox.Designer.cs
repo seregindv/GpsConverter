@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.titleLabel = new System.Windows.Forms.Label();
-            this.textBox = new Controls.TextBoxEx();
+            this.textBox = new GpsConverter.Controls.TextBoxEx();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -45,6 +45,7 @@
             // textBox
             // 
             this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox.Error = false;
             this.textBox.Location = new System.Drawing.Point(0, 13);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -19,7 +21,13 @@ namespace GpsConverter
 {
     public partial class Form1 : ClipboardMonitorForm, IPoiProvider
     {
-        readonly List<TitledTextbox> _resultBoxes = new List<TitledTextbox>();
+        private class ResultBox
+        {
+            public TitledTextbox TextBox { get; set; }
+            public ToolStripButton SaveButton { get; set; }
+        }
+
+        readonly List<ResultBox> _resultBoxes = new List<ResultBox>();
         readonly ClipboardCoordinatesParser _htmlParser;
         private LocalWebServer _webServer;
 
@@ -27,37 +35,49 @@ namespace GpsConverter
         {
             _htmlParser = new ClipboardCoordinatesParser();
             InitializeComponent();
-            _resultBoxes.Add(CreateResultTextBox());
-            resultPanel.Controls.Add(_resultBoxes[0], 0, 0);
+            _resultBoxes.Add(CreateResultBox());
+            resultPanel.Controls.Add(_resultBoxes[0].TextBox, 0, 0);
         }
 
         private void SetupResult(ConvertResult[] result)
         {
             for (int i = _resultBoxes.Count; i < result.Length; i++)
-                _resultBoxes.Add(CreateResultTextBox());
+            {
+                var box = CreateResultBox();
+                _resultBoxes.Add(box);
+
+            }
             for (int i = 0; i < result.Length; i++)
             {
-                _resultBoxes[i].Text = result[i].Text;
-                _resultBoxes[i].Title = result[i].Title;
-                _resultBoxes[i].TextColor = result[i].IsError ? Color.Red : Color.Black;
+                _resultBoxes[i].TextBox.Text = result[i].Text;
+                _resultBoxes[i].TextBox.Title = result[i].Title;
+                _resultBoxes[i].TextBox.TextColor = result[i].IsError ? Color.Red : Color.Black;
+                _resultBoxes[i].SaveButton.Text = "Save " + result[i].Title.ToLower();
+                _resultBoxes[i].SaveButton.Visible = true;
             }
             if (result.Length != resultPanel.ColumnCount)
             {
                 var colCount = resultPanel.ColumnCount;
                 resultPanel.ColumnCount = result.Length;
                 var colWidth = 100 / (float)result.Length;
-                for (int i = 0; i < resultPanel.ColumnCount; i++)
+                for (var i = 0; i < resultPanel.ColumnCount; i++)
                     if (resultPanel.ColumnStyles.Count > i)
                         SetupColumnStyle(resultPanel.ColumnStyles[i], colWidth);
                     else
                         resultPanel.ColumnStyles.Add(SetupColumnStyle(new ColumnStyle(), colWidth));
 
                 if (colCount > result.Length)
-                    for (int i = result.Length; i < colCount; i++)
-                        resultPanel.Controls.Remove(_resultBoxes[i]);
+                    for (var i = result.Length; i < colCount; i++)
+                    {
+                        resultPanel.Controls.Remove(_resultBoxes[i].TextBox);
+                        toolStrip1.Items.Remove(_resultBoxes[i].SaveButton);
+                    }
                 else if (colCount < result.Length)
-                    for (int i = colCount; i < result.Length; i++)
-                        resultPanel.Controls.Add(_resultBoxes[i], i, 0);
+                    for (var i = colCount; i < result.Length; i++)
+                    {
+                        resultPanel.Controls.Add(_resultBoxes[i].TextBox, i, 0);
+                        toolStrip1.Items.Add(_resultBoxes[i].SaveButton);
+                    }
             }
         }
 
@@ -68,9 +88,22 @@ namespace GpsConverter
             return columnStyle;
         }
 
-        private TitledTextbox CreateResultTextBox()
+        private ResultBox CreateResultBox()
         {
-            return new TitledTextbox();
+            var textBox = new TitledTextbox();
+            var button = new ToolStripButton
+            {
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Visible = false
+            };
+            button.Click += (s, e) => Save(textBox.Text, textBox.Title.ToLower());
+            toolStrip1.Items.Add(button);
+
+            return new ResultBox
+            {
+                TextBox = textBox,
+                SaveButton = button
+            };
         }
 
         private void convertButton_Click(object sender, EventArgs e)
@@ -120,6 +153,9 @@ namespace GpsConverter
                 var firstPoint = _htmlParser.Points.FirstOrDefault();
                 if (firstPoint != null)
                     Text = firstPoint.Description;
+                if (saveOnCopyCheckBox.Checked && !SaveText())
+                    Text = "* " + Text;
+
             }
             base.OnClipboardChanged();
         }
@@ -157,8 +193,39 @@ namespace GpsConverter
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(_webServer!=null)
+            if (_webServer != null)
                 _webServer.Stop();
         }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            SaveText();
+        }
+
+        private bool Save(string text, string extension)
+        {
+            if (String.IsNullOrEmpty(nameBox.Text))
+            {
+                nameBox.Error = true;
+                return false;
+            }
+            File.WriteAllText(Path.Combine(ConfigurationManager.AppSettings["MapPath"],
+                nameBox.Text + "." + extension), text, Encoding.UTF8);
+            return true;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                SaveText();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private bool SaveText() =>
+            Save(fromBox.Text, "txt");
     }
 }

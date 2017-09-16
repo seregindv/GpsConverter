@@ -10,12 +10,7 @@ namespace GpsConverter.PointParsers
 {
     public class ManualPointParser : RegexPointPaser
     {
-        readonly Regex _pointExpression = new Regex(@"(\-?\d+(?:,|\.)\d+)\s+(\-?\d+(?:,|\.)\d+)\s+(.+)");
-
-        protected override Regex PointExpression
-        {
-            get { return _pointExpression; }
-        }
+        protected override Regex PointExpression { get; } = new Regex(@"(\-?\d+(?:,|\.)\d+)\s+(\-?\d+(?:,|\.)\d+)\s+(.+)");
 
         protected override NamedEarthPoint CreatePoint(Match match)
         {
@@ -26,9 +21,6 @@ namespace GpsConverter.PointParsers
             return new NamedEarthPoint(lon, lat, match.Groups[3].Value);
         }
 
-        public override string FormatSample
-        {
-            get { return @"55.87719 38.78353 ул. Советская"; }
-        }
+        public override string FormatSample => @"55.87719 38.78353 ул. Советская";
     }
 }

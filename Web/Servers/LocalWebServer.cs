@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using GpsConverter.Web.RequestProcessors;
 
 namespace GpsConverter.Web.Servers
@@ -70,9 +69,6 @@ namespace GpsConverter.Web.Servers
             _server.Stop();
         }
 
-        public Uri BaseUri
-        {
-            get { return _baseUri; }
-        }
+        public Uri BaseUri => _baseUri;
     }
 }

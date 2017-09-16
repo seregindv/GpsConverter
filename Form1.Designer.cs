@@ -31,10 +31,13 @@ namespace GpsConverter
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.saveButton = new System.Windows.Forms.ToolStripButton();
             this.mapLink = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
-            this.nameBox = new System.Windows.Forms.TextBox();
+            this.nameBox = new GpsConverter.Controls.TextBoxEx();
             this.info = new System.Windows.Forms.Button();
             this.convertButton = new System.Windows.Forms.Button();
             this.montiorClipboardCheckBox = new System.Windows.Forms.CheckBox();
@@ -42,9 +45,11 @@ namespace GpsConverter
             this.label1 = new System.Windows.Forms.Label();
             this.prefixTextBox = new System.Windows.Forms.TextBox();
             this.resultPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.saveOnCopyCheckBox = new System.Windows.Forms.CheckBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -56,6 +61,8 @@ namespace GpsConverter
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.saveOnCopyCheckBox);
+            this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             this.splitContainer1.Panel1.Controls.Add(this.mapLink);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.nameBox);
@@ -73,10 +80,31 @@ namespace GpsConverter
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveButton});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(686, 25);
+            this.toolStrip1.TabIndex = 9;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // saveButton
+            // 
+            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
+            this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(35, 22);
+            this.saveButton.Text = "Save";
+            this.saveButton.ToolTipText = "Save txt";
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
             // mapLink
             // 
             this.mapLink.AutoSize = true;
-            this.mapLink.Location = new System.Drawing.Point(125, 239);
+            this.mapLink.Location = new System.Drawing.Point(223, 239);
             this.mapLink.Name = "mapLink";
             this.mapLink.Size = new System.Drawing.Size(28, 13);
             this.mapLink.TabIndex = 8;
@@ -88,15 +116,16 @@ namespace GpsConverter
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(351, 239);
+            this.label2.Location = new System.Drawing.Point(376, 239);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 7;
-            this.label2.Text = "KML Name";
+            this.label2.Text = "Name";
             // 
             // nameBox
             // 
             this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameBox.Error = false;
             this.nameBox.Location = new System.Drawing.Point(417, 236);
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(140, 20);
@@ -142,19 +171,20 @@ namespace GpsConverter
             this.fromBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fromBox.Location = new System.Drawing.Point(3, 3);
+            this.fromBox.Error = false;
+            this.fromBox.Location = new System.Drawing.Point(3, 28);
             this.fromBox.MaxLength = 2147483647;
             this.fromBox.Multiline = true;
             this.fromBox.Name = "fromBox";
             this.fromBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.fromBox.Size = new System.Drawing.Size(680, 225);
+            this.fromBox.Size = new System.Drawing.Size(680, 200);
             this.fromBox.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(243, 239);
+            this.label1.Location = new System.Drawing.Point(268, 239);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 4;
@@ -163,7 +193,7 @@ namespace GpsConverter
             // prefixTextBox
             // 
             this.prefixTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.prefixTextBox.Location = new System.Drawing.Point(282, 236);
+            this.prefixTextBox.Location = new System.Drawing.Point(307, 236);
             this.prefixTextBox.Name = "prefixTextBox";
             this.prefixTextBox.Size = new System.Drawing.Size(63, 20);
             this.prefixTextBox.TabIndex = 3;
@@ -180,6 +210,18 @@ namespace GpsConverter
             this.resultPanel.Size = new System.Drawing.Size(686, 263);
             this.resultPanel.TabIndex = 0;
             // 
+            // saveOnCopyCheckBox
+            // 
+            this.saveOnCopyCheckBox.AutoSize = true;
+            this.saveOnCopyCheckBox.Checked = true;
+            this.saveOnCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.saveOnCopyCheckBox.Location = new System.Drawing.Point(125, 238);
+            this.saveOnCopyCheckBox.Name = "saveOnCopyCheckBox";
+            this.saveOnCopyCheckBox.Size = new System.Drawing.Size(92, 17);
+            this.saveOnCopyCheckBox.TabIndex = 10;
+            this.saveOnCopyCheckBox.Text = "Save on copy";
+            this.saveOnCopyCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AcceptButton = this.convertButton;
@@ -187,6 +229,7 @@ namespace GpsConverter
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(686, 527);
             this.Controls.Add(this.splitContainer1);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "GPS Converter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -194,6 +237,8 @@ namespace GpsConverter
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -209,8 +254,11 @@ namespace GpsConverter
         private System.Windows.Forms.TableLayoutPanel resultPanel;
         private System.Windows.Forms.Button info;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox nameBox;
+        private Controls.TextBoxEx nameBox;
         private System.Windows.Forms.LinkLabel mapLink;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton saveButton;
+        private System.Windows.Forms.CheckBox saveOnCopyCheckBox;
     }
 }
 
