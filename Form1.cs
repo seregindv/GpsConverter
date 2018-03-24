@@ -127,6 +127,8 @@ namespace GpsConverter
             IEarthConverter converter;
             if (text.StartsWith("https://yandex.ru/maps/"))
                 converter = new YaLinkToGpxConverter();
+            else if (text.StartsWith("https://2gis.ru/"))
+                converter = new DoubleGisToGpxConverter();
             else if (text.Contains("data-jmapping"))
                 converter = new PoiConverter(new KarlovyVaryBusMapConverter());
             else if (text.Contains("GLatLng"))

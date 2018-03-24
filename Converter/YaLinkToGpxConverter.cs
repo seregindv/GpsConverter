@@ -9,21 +9,13 @@ using System.Collections;
 
 namespace GpsConverter.Converter
 {
-    class YaLinkToGpxConverter : IEarthConverter
+    class YaLinkToGpxConverter : LinkConverterBase
     {
         private const string linkStruct = @".*?rl=(?<ini_lon>[\d.]+)%2C(?<ini_lat>[\d.]+)(~(?<lon_off>[\d\.-]+)%2C(?<lat_off>[\d\.-]+))*";
 
-        private void WriteTrkpt(XmlWriter writer, EarthPoint point)
-        {
-            writer.WriteStartElement("trkpt");
-            writer.WriteAttributeString("lon", point.StringLongitude);
-            writer.WriteAttributeString("lat", point.StringLatitude);
-            writer.WriteEndElement();
-        }
-
         #region IEarthConverter Members
 
-        public IList<NamedEarthPoint> GetPoints(string points)
+        public override IList<NamedEarthPoint> GetPoints(string points)
         {
             var result = new List<NamedEarthPoint>();
             var match = Regex.Match(points, linkStruct);
@@ -54,31 +46,6 @@ namespace GpsConverter.Converter
             } while (true);
             return result;
         }
-
-        public ConvertResult[] Convert(string something)
-        {
-            var points = GetPoints(something);
-            var result = new StringBuilder();
-            var settings = new XmlWriterSettings
-            {
-                Indent = true
-            };
-            using (var xmlResult = XmlWriter.Create(result, settings))
-            {
-                xmlResult.WriteStartElement("gpx");
-                xmlResult.WriteStartElement("trk");
-                xmlResult.WriteStartElement("trkseg");
-                foreach (var point in points)
-                    WriteTrkpt(xmlResult, point);
-                xmlResult.WriteEndElement(); // trkseg
-                xmlResult.WriteEndElement(); // trk
-                xmlResult.WriteEndElement(); // gpx
-                xmlResult.Close();
-            }
-            return new[] { new ConvertResult("GPX path", result.ToString()) };
-        }
-
-        public string Name { get; set; }
 
         #endregion
     }
