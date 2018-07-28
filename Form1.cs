@@ -211,8 +211,19 @@ namespace GpsConverter
                 nameBox.Error = true;
                 return false;
             }
-            File.WriteAllText(Path.Combine(ConfigurationManager.AppSettings["MapPath"],
-                nameBox.Text + "." + extension), text, Encoding.UTF8);
+            var encoding = Encoding.UTF8;
+            var fileLength = encoding.GetByteCount(text);
+            var filePath = Path.Combine(ConfigurationManager.AppSettings["MapPath"],
+                nameBox.Text + "." + extension);
+            var fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists && fileInfo.Length >= fileLength)
+            {
+                var messageBoxResult = MessageBox.Show(this, "Hey, you really wanna save smaller file?", "Wow", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (messageBoxResult == DialogResult.No)
+                    return false;
+            }
+
+            File.WriteAllText(filePath, text, Encoding.UTF8);
             return true;
         }
 
