@@ -11,7 +11,7 @@ namespace GpsConverter.Web.Servers
     public class LocalWebServer
     {
         private readonly WebServer _server;
-        private readonly Uri _baseUri;
+        private readonly List<Uri> _baseUris;
         private readonly Dictionary<string, IWebRequestProcessor> _processors;
 
         private static int GetRandomUnusedPort()
@@ -32,15 +32,36 @@ namespace GpsConverter.Web.Servers
         {
             _processors = processors.ToDictionary(processor => processor.Prefix);
             var port = GetRandomUnusedPort();
-            _baseUri = new Uri("http://localhost:" + port);
-            _server = new WebServer(_processors.Select(processor => GetAddress(processor.Value.Prefix)).ToArray(), ProcessRequest);
+            _baseUris = new List<Uri>();
+            _baseUris.Add(new Uri("http://localhost:" + port));
+            var localIps = LocalIPAddresses();
+            _baseUris.AddRange(localIps.Select(localIp => new Uri("http://" + localIp.ToString() + ":" + port)));
+            _server = new WebServer(_processors
+                .SelectMany(processor => GetAddress(processor.Value.Prefix))
+                .ToArray(), ProcessRequest);
         }
-        private string GetAddress(string arg)
+
+        private IEnumerable<IPAddress> LocalIPAddresses()
         {
-            var result = new Uri(_baseUri, arg).ToString();
-            if (!result.EndsWith("/", StringComparison.Ordinal))
-                result += "/";
-            return result;
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                return null;
+
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            return host
+                .AddressList
+                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+        }
+
+        private IEnumerable<string> GetAddress(string arg)
+        {
+            foreach (var baseUri in _baseUris)
+            {
+                var result = new Uri(baseUri, arg).ToString();
+                if (!result.EndsWith("/", StringComparison.Ordinal))
+                    result += "/";
+                yield return result;
+            }
         }
 
         private string ProcessRequest(HttpListenerContext ctx)
@@ -48,7 +69,7 @@ namespace GpsConverter.Web.Servers
             IWebRequestProcessor processor;
             if (_processors.TryGetValue(ctx.Request.Url.LocalPath.Trim('/'), out processor))
                 return processor.Process(ctx);
-            
+
             ctx.Response.StatusCode = 404;
             return null;
         }
@@ -69,6 +90,6 @@ namespace GpsConverter.Web.Servers
             _server.Stop();
         }
 
-        public Uri BaseUri => _baseUri;
+        public Uri BaseUri => _baseUris[0];
     }
 }
