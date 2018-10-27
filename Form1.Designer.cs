@@ -33,6 +33,7 @@ namespace GpsConverter
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.saveOnCopyCheckBox = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
             this.mapLink = new System.Windows.Forms.LinkLabel();
@@ -45,7 +46,6 @@ namespace GpsConverter
             this.label1 = new System.Windows.Forms.Label();
             this.prefixTextBox = new System.Windows.Forms.TextBox();
             this.resultPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.saveOnCopyCheckBox = new System.Windows.Forms.CheckBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -79,6 +79,18 @@ namespace GpsConverter
             this.splitContainer1.Size = new System.Drawing.Size(686, 527);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // saveOnCopyCheckBox
+            // 
+            this.saveOnCopyCheckBox.AutoSize = true;
+            this.saveOnCopyCheckBox.Checked = true;
+            this.saveOnCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.saveOnCopyCheckBox.Location = new System.Drawing.Point(125, 238);
+            this.saveOnCopyCheckBox.Name = "saveOnCopyCheckBox";
+            this.saveOnCopyCheckBox.Size = new System.Drawing.Size(92, 17);
+            this.saveOnCopyCheckBox.TabIndex = 10;
+            this.saveOnCopyCheckBox.Text = "Save on copy";
+            this.saveOnCopyCheckBox.UseVisualStyleBackColor = true;
             // 
             // toolStrip1
             // 
@@ -209,18 +221,6 @@ namespace GpsConverter
             this.resultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.resultPanel.Size = new System.Drawing.Size(686, 263);
             this.resultPanel.TabIndex = 0;
-            // 
-            // saveOnCopyCheckBox
-            // 
-            this.saveOnCopyCheckBox.AutoSize = true;
-            this.saveOnCopyCheckBox.Checked = true;
-            this.saveOnCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.saveOnCopyCheckBox.Location = new System.Drawing.Point(125, 238);
-            this.saveOnCopyCheckBox.Name = "saveOnCopyCheckBox";
-            this.saveOnCopyCheckBox.Size = new System.Drawing.Size(92, 17);
-            this.saveOnCopyCheckBox.TabIndex = 10;
-            this.saveOnCopyCheckBox.Text = "Save on copy";
-            this.saveOnCopyCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
