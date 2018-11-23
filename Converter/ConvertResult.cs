@@ -27,5 +27,7 @@
         {
             get { return _text; }
         }
+
+        public bool IsOutdated { get; set; }
     }
 }

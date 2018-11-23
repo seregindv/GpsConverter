@@ -52,6 +52,8 @@ namespace GpsConverter
                 _resultBoxes[i].TextBox.Text = result[i].Text;
                 _resultBoxes[i].TextBox.Title = result[i].Title;
                 _resultBoxes[i].TextBox.TextColor = result[i].IsError ? Color.Red : Color.Black;
+                if (result[i].IsOutdated)
+                    _resultBoxes[i].TextBox.BackColor = SystemColors.Control;
                 _resultBoxes[i].SaveButton.Text = "Save " + result[i].Title.ToLower();
                 _resultBoxes[i].SaveButton.Visible = true;
             }
@@ -216,7 +218,7 @@ namespace GpsConverter
             var filePath = Path.Combine(ConfigurationManager.AppSettings["MapPath"],
                 nameBox.Text + "." + extension);
             var fileInfo = new FileInfo(filePath);
-            if (fileInfo.Exists && fileInfo.Length >= fileLength)
+            if (fileInfo.Exists && fileInfo.Length > fileLength)
             {
                 var messageBoxResult = MessageBox.Show(this, "Hey, you really wanna save smaller file?", "Wow", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (messageBoxResult == DialogResult.No)

@@ -18,20 +18,26 @@ namespace GpsConverter.Controls
 
         public override string Text
         {
-            set { textBox.Text = value; }
             get { return textBox.Text; }
+            set { textBox.Text = value; }
         }
 
         public string Title
         {
-            set { titleLabel.Text = value; }
             get { return titleLabel.Text; }
+            set { titleLabel.Text = value; }
         }
 
         public Color TextColor
         {
-            set { textBox.ForeColor = value; }
             get { return textBox.ForeColor; }
+            set { textBox.ForeColor = value; }
+        }
+
+        public Color BackColor
+        {
+            get { return textBox.BackColor;}
+            set { textBox.BackColor = value; }
         }
     }
 }
