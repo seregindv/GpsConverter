@@ -30,7 +30,7 @@ namespace GpsConverter.Converter
                 xmlResult.WriteEndElement(); // gpx
                 xmlResult.Close();
             }
-            return new[] { new ConvertResult("GPX path", result.ToString()) };
+            return new[] { new ConvertResult("GPX", result.ToString()) };
         }
 
         public abstract IList<NamedEarthPoint> GetPoints(string points);
