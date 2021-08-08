@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace GpsConverter.Web.RequestProcessors
 {
-    public class CopyRequestProcessor : WebRequestProcessor
+    public class CopyPointsRequestProcessor : WebRequestProcessor
     {
         public override string Prefix => "actions/copy";
 

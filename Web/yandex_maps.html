@@ -65,6 +65,18 @@
 
             firstButton = new ymaps.control.Button({
                 data: {
+                    content: "Copy path"
+                },
+                options: {
+                    selectOnClick: false,
+                    maxWidth: 500
+                },
+            });
+            firstButton.events.add('press', submitPath);
+            myMap.controls.add(firstButton, { float: 'right' });
+
+            firstButton = new ymaps.control.Button({
+                data: {
                     content: "Paste"
                 },
                 options: {
@@ -157,11 +169,23 @@
         function guid() {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000)
-                  .toString(16)
-                  .substring(1);
+                    .toString(16)
+                    .substring(1);
             }
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-              s4() + '-' + s4() + s4() + s4();
+                s4() + '-' + s4() + s4() + s4();
+        }
+
+        function submitPath() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/actions/copy-path', true);
+            xhr.setRequestHeader('Content-Type', 'application/xml; charset=UTF-8');
+
+            const data = ['<?xml version="1.0" encoding="utf-16"?>', '<gpx>', '  <trk>', '    <trkseg>']
+                .concat(myMap.behaviors.get('ruler').geometry.getCoordinates()
+                    .map(c => `      <trkpt lon="${c[1]}" lat="${c[0]}" />`))
+                .concat('    </trkseg>', '  </trk>', '</gpx>').join('\n');
+            xhr.send(data);
         }
     </script>
 </head>

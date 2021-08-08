@@ -33,6 +33,7 @@ namespace GpsConverter
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.folderLink = new System.Windows.Forms.LinkLabel();
             this.saveOnCopyCheckBox = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
@@ -61,6 +62,7 @@ namespace GpsConverter
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.folderLink);
             this.splitContainer1.Panel1.Controls.Add(this.saveOnCopyCheckBox);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             this.splitContainer1.Panel1.Controls.Add(this.mapLink);
@@ -79,6 +81,17 @@ namespace GpsConverter
             this.splitContainer1.Size = new System.Drawing.Size(686, 527);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // folderLink
+            // 
+            this.folderLink.AutoSize = true;
+            this.folderLink.Location = new System.Drawing.Point(248, 239);
+            this.folderLink.Name = "folderLink";
+            this.folderLink.Size = new System.Drawing.Size(36, 13);
+            this.folderLink.TabIndex = 11;
+            this.folderLink.TabStop = true;
+            this.folderLink.Text = "Folder";
+            this.folderLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.folderLink_LinkClicked);
             // 
             // saveOnCopyCheckBox
             // 
@@ -116,7 +129,7 @@ namespace GpsConverter
             // mapLink
             // 
             this.mapLink.AutoSize = true;
-            this.mapLink.Location = new System.Drawing.Point(223, 239);
+            this.mapLink.Location = new System.Drawing.Point(218, 239);
             this.mapLink.Name = "mapLink";
             this.mapLink.Size = new System.Drawing.Size(28, 13);
             this.mapLink.TabIndex = 8;
@@ -196,7 +209,7 @@ namespace GpsConverter
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(268, 239);
+            this.label1.Location = new System.Drawing.Point(299, 239);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 4;
@@ -205,9 +218,9 @@ namespace GpsConverter
             // prefixTextBox
             // 
             this.prefixTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.prefixTextBox.Location = new System.Drawing.Point(307, 236);
+            this.prefixTextBox.Location = new System.Drawing.Point(338, 236);
             this.prefixTextBox.Name = "prefixTextBox";
-            this.prefixTextBox.Size = new System.Drawing.Size(63, 20);
+            this.prefixTextBox.Size = new System.Drawing.Size(32, 20);
             this.prefixTextBox.TabIndex = 3;
             // 
             // resultPanel
@@ -259,6 +272,7 @@ namespace GpsConverter
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton saveButton;
         private System.Windows.Forms.CheckBox saveOnCopyCheckBox;
+        private System.Windows.Forms.LinkLabel folderLink;
     }
 }
 

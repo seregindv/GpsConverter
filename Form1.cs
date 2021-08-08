@@ -188,11 +188,17 @@ namespace GpsConverter
                 _webServer = new LocalWebServer(
                     new GetRequestProcessor(this),
                     new MapRequestProcessor(),
-                    new CopyRequestProcessor());
+                    new CopyPointsRequestProcessor(),
+                    new CopyPathRequestProcessor());
                 _webServer.Start();
             }
             Process.Start(new Uri(_webServer.BaseUri, "map/").ToString());
 
+        }
+
+        private void folderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(ConfigurationManager.AppSettings["MapPath"]);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
