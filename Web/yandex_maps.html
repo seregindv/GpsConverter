@@ -12,6 +12,24 @@
         #map {
             min-height: 100%;
         }
+
+        .poi-editor {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font: 13px/20px Arial,sans-serif;
+            resize: none;
+            overflow: hidden;
+            border: solid gray;
+            border-width: 0 0 1px 0;
+            outline: none;
+        }
     </style>
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
@@ -28,17 +46,6 @@
 
             myMap.events.add('contextmenu', addPlacemark);
 
-            var firstButton = new ymaps.control.Button({
-                data: {
-                    content: "Get"
-                },
-                options: {
-                    selectOnClick: false
-                }
-            });
-            firstButton.events.add('press', function () { getPoints("/actions/get"); });
-            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 30, left: 10 } });
-
             firstButton = new ymaps.control.Button({
                 data: {
                     content: "Submit"
@@ -49,7 +56,30 @@
                 },
             });
             firstButton.events.add('press', function () { submitPoints('/actions/submit'); });
-            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 30, left: 60 } });
+            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 40, left: 10 } });
+
+            firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Paste"
+                },
+                options: {
+                    selectOnClick: false,
+                    maxWidth: 500
+                },
+            });
+            firstButton.events.add('press', function () { getPoints('/actions/paste'); });
+            myMap.controls.add(firstButton, { float: 'none', position: { bottom: 40, left: 85 } });
+
+            var firstButton = new ymaps.control.Button({
+                data: {
+                    content: "Get"
+                },
+                options: {
+                    selectOnClick: false
+                }
+            });
+            firstButton.events.add('press', function () { getPoints("/actions/get"); });
+            myMap.controls.add(firstButton, { float: 'right' });
 
             firstButton = new ymaps.control.Button({
                 data: {
@@ -74,18 +104,6 @@
             });
             firstButton.events.add('press', submitPath);
             myMap.controls.add(firstButton, { float: 'right' });
-
-            firstButton = new ymaps.control.Button({
-                data: {
-                    content: "Paste"
-                },
-                options: {
-                    selectOnClick: false,
-                    maxWidth: 500
-                },
-            });
-            firstButton.events.add('press', function () { getPoints('/actions/paste'); });
-            myMap.controls.add(firstButton, { float: 'right' });
         }
 
         function addPlacemark(e) {
@@ -104,16 +122,14 @@
             delete placemarks[placemarkId];
         }
 
-        function renamePlacemark(placemarkId) {
+        function renamePlacemark(textarea, placemarkId) {
+            const name = textarea.value;
             var placemark = placemarks[placemarkId];
-            var name = prompt('Point name', placemark.properties.get('hintContent'));
-            if (name != null) {
-                placemark.properties.set({
-                    hintContent: name,
-                    balloonContent: getBalloonContent(placemarkId, name)
-                });
-                placemark.balloon.close();
-            }
+            placemark.properties.set({
+                hintContent: name,
+                balloonContent: getBalloonContent(placemarkId, name)
+            });
+            placemark.balloon.close();
         }
 
         function submitPoints(address) {
@@ -156,14 +172,37 @@
         }
 
         function getPlacemark(coords, key, name) {
-            return new ymaps.Placemark(coords, {
+            const placemark = new ymaps.Placemark(coords, {
                 hintContent: name,
                 balloonContent: getBalloonContent(key, name)
             }, { draggable: true });
+            return placemark;
+        }
+
+        function onEditorKeyDown(textarea, key, e) {
+            switch (e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    renamePlacemark(textarea, key)
+                    return false;
+                case 'Escape':
+                    e.preventDefault();
+                    textarea.value = placemarks[key].properties.get('hintContent');
+                    return false;
+            }
         }
 
         function getBalloonContent(key, name) {
-            return name + '<br><button onclick="deletePlacemark(\'' + key + '\')">x</button> <button onclick="renamePlacemark(\'' + key + '\')">rename</button>';
+            return `
+<div style="margin: 0 5px">
+    <div style="position: relative">
+        <span style="margin: 3px; visibility: hidden">${name}</span>
+        <textarea class="poi-editor" onkeydown="onEditorKeyDown(this, '${key}', event)" autofocus onfocus="this.select()">${name}</textarea>
+    </div>
+    <div style="margin-top: 5px">
+        <button onclick="deletePlacemark('${key}')">delete</button>
+    </div>
+</div>`;
         }
 
         function guid() {
