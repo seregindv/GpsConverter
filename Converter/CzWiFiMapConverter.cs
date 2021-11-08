@@ -17,7 +17,7 @@ namespace GpsConverter.Converter
                 .Select(
                     match =>
                         new NamedEarthPoint(Double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
-                            Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), match.Groups[3].Value + " [" + match.Groups[4].Value + "]")).ToArray();
+                            Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), match.Groups[3].Value + " [" + match.Groups[4].Value + "]", null)).ToArray();
         }
     }
 }

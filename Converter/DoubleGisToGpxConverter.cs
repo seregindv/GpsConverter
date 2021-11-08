@@ -34,7 +34,7 @@ namespace GpsConverter.Converter
                 result.Add(new NamedEarthPoint(
                     Double.Parse(((Capture)lonEnumerator.Current).Value, CultureInfo.InvariantCulture),
                     Double.Parse(((Capture)latEnumerator.Current).Value, CultureInfo.InvariantCulture),
-                    counter.ToString()));
+                    counter.ToString(), null));
             } while (true);
             return result;
         }

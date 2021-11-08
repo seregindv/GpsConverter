@@ -24,7 +24,7 @@ namespace GpsConverter.Converter
 
             var currentPoint = new EarthPoint(match.Groups["ini_lon"].Value, match.Groups["ini_lat"].Value);
             var counter = 1;
-            result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, "1"));
+            result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, "1", null));
 
             var lonEnumerator = match.Groups["lon_off"].Captures.GetEnumerator();
             var latEnumerator = match.Groups["lat_off"].Captures.GetEnumerator();
@@ -42,7 +42,7 @@ namespace GpsConverter.Converter
                     throw new Exception("Latitude without lontitude");
                 currentPoint.Offset(((Capture)lonEnumerator.Current).Value, ((Capture)latEnumerator.Current).Value);
                 counter++;
-                result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, counter.ToString()));
+                result.Add(new NamedEarthPoint(currentPoint.Longitude, currentPoint.Latitude, counter.ToString(), null));
             } while (true);
             return result;
         }

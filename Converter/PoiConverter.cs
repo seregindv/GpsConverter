@@ -30,7 +30,7 @@ namespace GpsConverter.Converter
         {
             var points = GetPoints(something);
             var result = new ConvertResult[3];
-            result[0] = new ConvertResult("GPX", GetWpt(points));
+            result[0] = new ConvertResult("GPX", GetGpx(points));
             result[1] = new ConvertResult("KML", GetKml(points));
             result[2] = new ConvertResult("LMX", GetLmx(points)) { IsOutdated = true };
             return result;
@@ -40,19 +40,21 @@ namespace GpsConverter.Converter
 
         #endregion
 
-        private string GetWpt(IList<NamedEarthPoint> points)
+        private string GetGpx(IList<NamedEarthPoint> points)
         {
             var doc = new XDocument(
                 new XDeclaration("1.0", "UTF-8", null),
-                new XElement("gpx",
-                    from point in points
-                    select new XElement("wpt",
-                        new XAttribute("lat", point.StringLatitude),
-                        new XAttribute("lon", point.StringLongitude),
-                        new XElement("name", point.Name)
-                    )
-                )
-            );
+                new XElement("gpx", points.Select(point =>
+                {
+                    var hasDescription = !string.IsNullOrEmpty(point.Description);
+                    var content = new XObject[hasDescription ? 4 : 3];
+                    content[0] = new XAttribute("lat", point.StringLatitude);
+                    content[1] = new XAttribute("lon", point.StringLongitude);
+                    content[2] = new XElement("name", point.Name);
+                    if (hasDescription)
+                        content[3] = new XElement("desc", point.Description);
+                    return new XElement("wpt", content);
+                })));
             return doc.GetString();
         }
 
@@ -73,6 +75,8 @@ namespace GpsConverter.Converter
                 {
                     xmlResult.WriteStartElement(prefix, "landmark", ns);
                     xmlResult.WriteElementString(prefix, "name", ns, point.Name);
+                    if (!string.IsNullOrEmpty(point.Description))
+                        xmlResult.WriteElementString(prefix, "description", ns, point.Description);
                     xmlResult.WriteStartElement(prefix, "coordinates", ns);
                     xmlResult.WriteElementString(prefix, "latitude", ns, point.StringLatitude);
                     xmlResult.WriteElementString(prefix, "longitude", ns, point.StringLongitude);
@@ -93,18 +97,24 @@ namespace GpsConverter.Converter
                 new XElement(ns + "kml",
                     new XElement(ns + "Document",
                         new XElement(ns + "name", Name),
-                        from point in points
-                        select new XElement(ns + "Placemark",
-                            new XElement(ns + "name", point.Name),
-                            new XElement(ns + "Point",
+                        points.Select(point =>
+                        {
+                            var hasDescription = !string.IsNullOrEmpty(point.Description);
+                            var content = new XObject[hasDescription ? 3 : 2];
+                            content[0] = new XElement(ns + "name", point.Name);
+                            content[1] = new XElement(ns + "Point",
                                 new XElement(ns + "coordinates",
                                     point.StringLongitude + "," + point.StringLatitude
                                 )
-                            )
-                        )
+                            );
+                            if (hasDescription)
+                                content[2] = new XElement(ns + "description", point.Description);
+                            return new XElement(ns + "Placemark", content);
+
+                        })
                     )
                 )
-            );
+            ); ;
             return doc.GetString();
         }
     }

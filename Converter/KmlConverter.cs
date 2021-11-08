@@ -31,7 +31,8 @@ namespace GpsConverter.Converter
                     return new NamedEarthPoint(
                         coordinates[0],
                         coordinates[1],
-                        element.Element(ns + "name").Value);
+                        element.Element(ns + "name").Value,
+                        element.Element(ns + "description")?.Value);
                 }).ToArray();
 
         }

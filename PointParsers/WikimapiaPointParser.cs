@@ -9,7 +9,7 @@ namespace GpsConverter.PointParsers
 {
     public class WikimapiaPointParser : RegexPointPaser
     {
-        private Regex _pointExpression = new Regex(@"[^\d]*(?<lat_deg>\d+).(?<lat_min>\d+).(?<lat_sec>\d+).(?<lat_dir>[NS])\s+(?<lon_deg>\d+).(?<lon_min>\d+).(?<lon_sec>\d+).(?<lon_dir>[WE])\s+(?<name>.+)");
+        private Regex _pointExpression = new Regex(@"^[^\d]*(?<lat_deg>\d+).(?<lat_min>\d+).(?<lat_sec>\d+).(?<lat_dir>[NS])\s+(?<lon_deg>\d+).(?<lon_min>\d+).(?<lon_sec>\d+).(?<lon_dir>[WE])\s+(?<name>.+?)(?:(?:\|\|\|)(?<description>.+))?$");
 
         protected override Regex PointExpression
         {
@@ -21,7 +21,7 @@ namespace GpsConverter.PointParsers
             return new NamedEarthPoint(
                    match.Groups["lon_deg"].Value, match.Groups["lon_min"].Value, match.Groups["lon_sec"].Value,
                    match.Groups["lat_deg"].Value, match.Groups["lat_min"].Value, match.Groups["lat_sec"].Value,
-                   match.Groups["name"].Value);
+                   match.Groups["name"].Value, match.Groups["description"].Value);
         }
 
         public override string FormatSample

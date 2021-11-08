@@ -101,6 +101,7 @@ namespace GpsConverter
             button.Click += (s, e) => Save(textBox.Text, textBox.Title.ToLower());
             toolStrip1.Items.Add(button);
 
+            textBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             return new ResultBox
             {
                 TextBox = textBox,

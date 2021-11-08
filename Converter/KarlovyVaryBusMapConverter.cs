@@ -25,7 +25,7 @@ namespace GpsConverter.Converter
                     var stopNameNode = node.SelectSingleNode("div/p[1]");
                     var stopName = stopNameNode == null ? String.Empty : stopNameNode.InnerText;
                     var busNumbers = String.Join(", ", node.SelectNodes("div/p[2]/a").Select(n => n.InnerText).ToArray());
-                    return new NamedEarthPoint(Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), Double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), stopName + " [" + busNumbers + "]");
+                    return new NamedEarthPoint(Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), Double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), stopName + " [" + busNumbers + "]", null);
                 }).ToArray();
         }
 

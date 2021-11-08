@@ -10,7 +10,7 @@ namespace GpsConverter.PointParsers
 {
     public class CultTourizmPointParser : RegexPointPaser
     {
-        Regex _pointExpression = new Regex(@"[NS]([\d\.]+)\s+[EW]([\d\.]+)\s+(.+)");
+        Regex _pointExpression = new Regex(@"^[NS]([\d\.]+)\s+[EW]([\d\.]+)\s+(.+?)(?:(?:\|\|\|)(.+))?$");
         protected override Regex PointExpression
         {
             get { return _pointExpression; }
@@ -18,7 +18,9 @@ namespace GpsConverter.PointParsers
 
         protected override NamedEarthPoint CreatePoint(Match match)
         {
-            return new NamedEarthPoint(Double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), match.Groups[3].Value.TrimEnd());
+            return new NamedEarthPoint(Double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
+                Double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture),
+                match.Groups[3].Value.TrimEnd(), match.Groups[4].Value.TrimEnd());
         }
 
         public override string FormatSample

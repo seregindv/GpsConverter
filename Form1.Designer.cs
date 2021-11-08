@@ -84,6 +84,7 @@ namespace GpsConverter
             // 
             // folderLink
             // 
+            this.folderLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.folderLink.AutoSize = true;
             this.folderLink.Location = new System.Drawing.Point(248, 239);
             this.folderLink.Name = "folderLink";
@@ -95,6 +96,7 @@ namespace GpsConverter
             // 
             // saveOnCopyCheckBox
             // 
+            this.saveOnCopyCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.saveOnCopyCheckBox.AutoSize = true;
             this.saveOnCopyCheckBox.Checked = true;
             this.saveOnCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -128,6 +130,7 @@ namespace GpsConverter
             // 
             // mapLink
             // 
+            this.mapLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.mapLink.AutoSize = true;
             this.mapLink.Location = new System.Drawing.Point(218, 239);
             this.mapLink.Name = "mapLink";

@@ -17,7 +17,7 @@ namespace GpsConverter.Converter
                 new NamedEarthPoint(
                     Double.Parse(element.Attribute("lon").Value, CultureInfo.InvariantCulture),
                     Double.Parse(element.Attribute("lat").Value, CultureInfo.InvariantCulture),
-                    element.Element("name").Value)).ToArray();
+                    element.Element("name").Value, element.Element("desc")?.Value)).ToArray();
         }
     }
 }
