@@ -30,6 +30,44 @@
             border-width: 0 0 1px 0;
             outline: none;
         }
+
+        button.delete {
+            position: relative;
+            background-color: red;
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            border: 1px #a00000 solid;
+            cursor: pointer;
+        }
+
+            button.delete:hover {
+                background-color: #e00000;
+            }
+
+            button.delete:active {
+                background-color: red;
+            }
+
+        button.cross::before,
+        button.cross::after {
+            left: 0;
+            top: calc(50% - 2px);
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 4px;
+            background-color: white;
+            border-radius: 2px;
+        }
+
+        button.cross::before {
+            transform: rotate(45deg);
+        }
+
+        button.cross::after {
+            transform: rotate(-45deg);
+        }
     </style>
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
@@ -176,6 +214,7 @@
                 hintContent: name,
                 balloonContent: getBalloonContent(key, name)
             }, { draggable: true });
+            placemark.events.add("balloonopen", () => document.querySelectorAll("textarea.poi-editor").forEach(t => t.focus()));
             return placemark;
         }
 
@@ -187,7 +226,12 @@
                     return false;
                 case 'Escape':
                     e.preventDefault();
-                    textarea.value = placemarks[key].properties.get('hintContent');
+                    const placemark = placemarks[key];
+                    const hintContent = placemark.properties.get('hintContent');
+                    if (textarea.value === hintContent)
+                        placemark.balloon.close();
+                    else
+                        textarea.value = hintContent;
                     return false;
             }
         }
@@ -195,13 +239,13 @@
         function getBalloonContent(key, name) {
             return `
 <div style="margin: 0 5px">
-    <div style="position: relative">
-        <span style="margin: 3px; visibility: hidden">${name}</span>
-        <textarea class="poi-editor" onkeydown="onEditorKeyDown(this, '${key}', event)" autofocus onfocus="this.select()">${name}</textarea>
-    </div>
-    <div style="margin-top: 5px">
-        <button onclick="deletePlacemark('${key}')">delete</button>
-    </div>
+        <div style="position: relative">
+            <span style="margin: 3px; visibility: hidden">${name}</span>
+            <textarea class="poi-editor" onkeydown="onEditorKeyDown(this, '${key}', event)" onfocus="this.select()">${name}</textarea>
+        </div>
+        <div style="margin-top: 5px">
+            <button class="delete cross" onclick="deletePlacemark('${key}')" title="Delete"></button>
+        </div>
 </div>`;
         }
 
