@@ -32,8 +32,10 @@ namespace GpsConverter.Web.Servers
         {
             _processors = processors.ToDictionary(processor => processor.Prefix);
             var port = GetRandomUnusedPort();
-            _baseUris = new List<Uri>();
-            _baseUris.Add(new Uri("http://localhost:" + port));
+            _baseUris = new List<Uri>
+            {
+                new Uri("http://localhost:" + port)
+            };
             var localIps = LocalIPAddresses();
             _baseUris.AddRange(localIps.Select(localIp => new Uri("http://" + localIp.ToString() + ":" + port)));
             _server = new WebServer(_processors

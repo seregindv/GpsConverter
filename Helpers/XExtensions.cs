@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace GpsConverter
+namespace GpsConverter.Helpers
 {
     public static class XExtensions
     {
-        public static string GetString(this XDocument doc)
+        public static string AsString(this XDocument doc)
         {
             var encoding = doc.Declaration != null && doc.Declaration.Encoding != null
                 ? Encoding.GetEncoding(doc.Declaration.Encoding)

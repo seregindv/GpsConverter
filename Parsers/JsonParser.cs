@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
-namespace GpsConverter
+namespace GpsConverter.Parsers
 {
     public static class JsonParser
     {
-        public static string ParsePoints(string streamToString)
+        public static string ParsePoints(string json)
         {
-            var j = JObject.Parse(streamToString);
+            var obj = JObject.Parse(json);
             var result = new StringBuilder();
-            foreach (var point in j.Children())
+            foreach (var point in obj.Children())
                 foreach (var pointDataItem in point.Children())
                 {
                     var lat = pointDataItem.First.First.Value<string>();
                     var lon = pointDataItem.First.Last.Value<string>();
                     var name = pointDataItem.Last.Value<string>();
-                    result.AppendLine(String.Concat(lat, " ", lon, " ", name));
+                    result.AppendLine(string.Concat(lat, " ", lon, " ", name));
                 }
 
             return result.ToString();

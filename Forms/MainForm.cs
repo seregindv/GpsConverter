@@ -17,9 +17,9 @@ using GpsConverter.Web.RequestProcessors;
 using GpsConverter.Web.Servers;
 using GpsConverter.Wikimapia;
 
-namespace GpsConverter
+namespace GpsConverter.Forms
 {
-    public partial class Form1 : ClipboardMonitorForm, IPoiProvider
+    public partial class MainForm : ClipboardMonitorForm, IPoiProvider
     {
         private class ResultBox
         {
@@ -31,7 +31,7 @@ namespace GpsConverter
         readonly ClipboardCoordinatesParser _htmlParser;
         private LocalWebServer _webServer;
 
-        public Form1()
+        public MainForm()
         {
             _htmlParser = new ClipboardCoordinatesParser();
             InitializeComponent();

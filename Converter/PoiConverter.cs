@@ -1,4 +1,5 @@
-﻿using GpsConverter.PointParsers;
+﻿using GpsConverter.Helpers;
+using GpsConverter.PointParsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,7 +56,7 @@ namespace GpsConverter.Converter
                         content[3] = new XElement("desc", point.Description);
                     return new XElement("wpt", content);
                 })));
-            return doc.GetString();
+            return doc.AsString();
         }
 
         private string GetLmx(IList<NamedEarthPoint> points)
@@ -115,7 +116,7 @@ namespace GpsConverter.Converter
                     )
                 )
             ); ;
-            return doc.GetString();
+            return doc.AsString();
         }
     }
 }

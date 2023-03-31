@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace GpsConverter
+namespace GpsConverter.Forms
 {
     public class ClipboardChangedEventArgs : EventArgs
     {
@@ -26,7 +26,7 @@ namespace GpsConverter
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            nextClipboardViewer = (IntPtr)SetClipboardViewer((int)this.Handle);
+            nextClipboardViewer = (IntPtr)SetClipboardViewer((int)Handle);
         }
 
         [DllImport("User32.dll")]
@@ -40,7 +40,7 @@ namespace GpsConverter
 
         IntPtr nextClipboardViewer;
 
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref Message m)
         {
             // defined in winuser.h
             const int WM_DRAWCLIPBOARD = 0x308;
@@ -68,7 +68,7 @@ namespace GpsConverter
 
         protected override void Dispose(bool disposing)
         {
-            ChangeClipboardChain(this.Handle, nextClipboardViewer);
+            ChangeClipboardChain(Handle, nextClipboardViewer);
             base.Dispose(disposing);
         }
     }

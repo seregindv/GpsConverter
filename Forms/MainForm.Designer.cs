@@ -1,9 +1,9 @@
 ﻿using System;
 using GpsConverter.Converter;
 
-namespace GpsConverter
+namespace GpsConverter.Forms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace GpsConverter
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.folderLink = new System.Windows.Forms.LinkLabel();
             this.saveOnCopyCheckBox = new System.Windows.Forms.CheckBox();
